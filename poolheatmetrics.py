@@ -173,7 +173,7 @@ class Meter:
 def setup_logger(
     console_level: int = logging.DEBUG,
     file_level: int = logging.DEBUG,
-    filename: str = "poolheatcontrol.log",
+    filename: str = "poolheatmetrics.log",
 ) -> None:
     h = logging.StreamHandler()
     h.setLevel(console_level)
