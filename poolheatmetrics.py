@@ -31,7 +31,7 @@ class ATData(typing.TypedDict):
     incoming: float
     outgoing: float
     target: float
-    on: bool
+    poolheateron: bool
 
 
 Gauge = prometheus_client.Gauge
@@ -43,7 +43,7 @@ class Metrics(typing.TypedDict):
     incoming: Gauge
     outgoing: Gauge
     target: Gauge
-    on: Gauge
+    poolheateron: Gauge
     pumprunning: Gauge
 
 
@@ -98,7 +98,7 @@ class Meter:
             incoming=Gauge("incoming", "Temperature incoming water", ["id"]),
             outgoing=Gauge("outgoing", "Temperature outgoing water", ["id"]),
             target=Gauge("target", "Target water temperature", ["id"]),
-            on=Gauge("on", "Enabled", ["id"]),
+            poolheateron=Gauge("poolheateron", "Enabled", ["id"]),
             pumprunning=Gauge("pumprunning", "Pump is running", ["name"]),
         )
 
@@ -260,7 +260,7 @@ def aquatemp_get_data(db: Database, token: str, id: str) -> ATData:
 
     for p in r.json()["objectResult"]:
         value = float(p["value"])
-        key = "on"
+        key = "poolheateron"
 
         match p["code"]:
             case "R02":
@@ -270,7 +270,7 @@ def aquatemp_get_data(db: Database, token: str, id: str) -> ATData:
             case "T03":
                 key = "outgoing"
             case "Power":
-                key = "on"
+                key = "poolheateron"
                 value = bool(float(p["value"]))
 
         d[key] = value # type:ignore
