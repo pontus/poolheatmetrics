@@ -256,7 +256,7 @@ def aquatemp_get_data(db: Database, token: str, id: str) -> ATData:
         logger.debug(f"Bad return from aquatemp when fetching temperature: {r.text}")
         raise SystemError("bad return from aquatemp temperature fetch")
 
-    d = ATData(target=-1, incoming=-1, outgoing=-1, on=False)
+    d = ATData(target=-1, incoming=-1, outgoing=-1, poolheateron=False)
 
     for p in r.json()["objectResult"]:
         value = float(p["value"])
