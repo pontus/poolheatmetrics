@@ -44,7 +44,7 @@ class Metrics(typing.TypedDict):
     outgoing: Gauge
     target: Gauge
     poolheateron: Gauge
-    pumprunning: Gauge
+    poolpumprunning: Gauge
 
 
 logger = logging.getLogger()
@@ -99,7 +99,7 @@ class Meter:
             outgoing=Gauge("outgoing", "Temperature outgoing water", ["id"]),
             target=Gauge("target", "Target water temperature", ["id"]),
             poolheateron=Gauge("poolheateron", "Enabled", ["id"]),
-            pumprunning=Gauge("pumprunning", "Pump is running", ["name"]),
+            poolpumprunning=Gauge("poolpumprunning", "Pump is running", ["name"]),
         )
 
     def find_hue(self) -> None:
@@ -168,7 +168,7 @@ class Meter:
         for p in t.keys():
             self.metrics[p].labels(id=id).set(t[p]) # type:ignore
 
-        self.metrics["pumprunning"].labels(name=PUMPNAME).set(self.is_running())
+        self.metrics["poolpumprunning"].labels(name=PUMPNAME).set(self.is_running())
 
 def setup_logger(
     console_level: int = logging.DEBUG,
